@@ -10,7 +10,6 @@ dataset_part = 0
 total_epochs = 100
 num_points = 224
 
-
 _base_ = [
     '_base_/default_runtime.py',
     '_base_/datasets/tower_12456.py'
@@ -44,22 +43,12 @@ log_config = dict(
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
     ])
-# channel_cfg = dict(
-#     num_output_channels=17,
-#     dataset_joints=17,
-#     dataset_channel=[
-#         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-#     ],
-#     inference_channel=[
-#         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-#     ])
+
 channel_cfg = dict( num_output_channels =num_points,
                     dataset_joints      =num_points,
                     dataset_channel     =[list(range(num_points))],
                     inference_channel   =list(range(num_points))
                     )
-
-
 
 data_cfg = dict(
     # image_size=[288, 384],
@@ -124,7 +113,7 @@ test_pipeline = val_pipeline
 
 # data_root = 'data/coco'
 # data_root = '../00_LJW/tower_dataset_12456'
-data_root = f'/kaggle/input/tower-dataset-2/resized_dataset'
+data_root = f'/kaggle/input/tower-dataset-2/resized_dataset/{img_size}'
 data = dict(
     # samples_per_gpu=32,
     # workers_per_gpu=2,
