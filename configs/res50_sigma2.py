@@ -111,12 +111,8 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-# data_root = 'data/coco'
-# data_root = '../00_LJW/tower_dataset_12456'
 data_root = f'/kaggle/input/tower-dataset-2/resized_dataset/{img_size}'
 data = dict(
-    # samples_per_gpu=32,
-    # workers_per_gpu=2,
     samples_per_gpu=batch_size,
     workers_per_gpu=workers,
     val_dataloader=dict(samples_per_gpu=1),
