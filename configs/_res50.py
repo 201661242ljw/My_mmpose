@@ -1,17 +1,16 @@
 batch_size = 2
 workers = 2
-total_epochs = 100
 img_size = 1024
 dataset_part = 0
+total_epochs = 100
 num_points = 224
+sigma = 2
 
 _base_ = [
     '_base_/default_runtime.py',
     '_base_/datasets/tower_12456.py'
 ]
 evaluation = dict(interval=10, metric='mAP', save_best='AP')
-
-w = 256
 
 optimizer = dict(
     type='AdamW',
@@ -26,19 +25,19 @@ optimizer = dict(
         }))
 
 optimizer_config = dict(grad_clip=None)
-
+# learning policy
 lr_config = dict(
     policy='step',
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=0.001,
     step=[170, 200])
-
-
+# total_epochs = 210
 log_config = dict(
     interval= 802 // batch_size // 50 * 50,
     hooks=[
         dict(type='TextLoggerHook'),
+        # dict(type='TensorboardLoggerHook')
     ])
 
 channel_cfg = dict( num_output_channels =num_points,
@@ -46,8 +45,6 @@ channel_cfg = dict( num_output_channels =num_points,
                     dataset_channel     =[list(range(num_points))],
                     inference_channel   =list(range(num_points))
                     )
-
-
 
 data_cfg = dict(
     # image_size=[288, 384],
@@ -82,8 +79,8 @@ train_pipeline = [
     dict(type='TopDownAffine'),
     dict(type='ToTensor'),
     dict(type='NormalizeTensor', mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    # dict(type='TopDownGenerateTarget', sigma=2),
-    dict(type='TopDownGenerateTarget', sigma=3),
+    dict(type='TopDownGenerateTarget', sigma=sigma),
+    # dict(type='TopDownGenerateTargetRegression'),
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -109,7 +106,6 @@ val_pipeline = [
 ]
 
 test_pipeline = val_pipeline
-
 
 data_root = f'/kaggle/input/tower-dataset-2/resized_dataset/{img_size}'
 data = dict(
@@ -143,37 +139,15 @@ data = dict(
         dataset_info={{_base_.dataset_info}}),
 )
 
-
-
 # model settings
-pretrained = ('https://github.com/SwinTransformer/storage/releases/download'
-              '/v1.0.0/swin_base_patch4_window7_224_22k.pth')
-
 model = dict(
     type='TopDown',
-    pretrained=pretrained,
-    backbone=dict(
-        type='SwinTransformer',
-        embed_dims=128,
-        depths=[2, 2, 18, 2],
-        num_heads=[4, 8, 16, 32],
-        window_size=7,
-        mlp_ratio=4,
-        qkv_bias=True,
-        qk_scale=None,
-        drop_rate=0.,
-        attn_drop_rate=0.,
-        drop_path_rate=0.3,
-        patch_norm=True,
-        out_indices=(0, 1, 2, 3),
-        with_cp=False,
-        convert_weights=True,
-    ),
+    pretrained='torchvision://resnet50',
+    backbone=dict(type='ResNet', depth=50),
     keypoint_head=dict(
         type='TopdownHeatmapSimpleHead',
-        in_channels=1024,
+        in_channels=2048,
         out_channels=channel_cfg['num_output_channels'],
-        in_index=3,
         loss_keypoint=dict(type='JointsMSELoss', use_target_weight=True)),
     train_cfg=dict(),
     test_cfg=dict(
