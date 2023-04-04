@@ -139,7 +139,6 @@ data = dict(
         dataset_info={{_base_.dataset_info}}),
 )
 
-# model settings
 model = dict(
     type='TopDown',
     pretrained='torchvision://resnet50',

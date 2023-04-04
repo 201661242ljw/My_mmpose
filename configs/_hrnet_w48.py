@@ -106,7 +106,6 @@ data_cfg = dict(
     bbox_file='',
 )
 
-
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='TopDownGetBboxCenterScale', padding=1.1),
