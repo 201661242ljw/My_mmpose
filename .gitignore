@@ -131,3 +131,7 @@ docs/**/modelzoo.md
 *.pth
 
 *.DS_Store
+
+
+00_LJW/
+*.bat
