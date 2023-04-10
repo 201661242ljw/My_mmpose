@@ -6,7 +6,6 @@ total_epochs = 100
 num_points = 224
 sigma = 2
 
-
 _base_ = [
     '_base_/default_runtime.py',
     '_base_/datasets/tower_12456.py'
@@ -31,7 +30,6 @@ channel_cfg = dict( num_output_channels =num_points,
                     dataset_channel     =[list(range(num_points))],
                     inference_channel   =list(range(num_points))
                     )
-
 # model settings
 model = dict(
     type='TopDown',
