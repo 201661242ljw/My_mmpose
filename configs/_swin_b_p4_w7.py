@@ -4,7 +4,7 @@ total_epochs = 100
 img_size = 1024
 dataset_part = 0
 num_points = 224
-sigm2 = 2
+sigma = 2
 
 _base_ = [
     '_base_/default_runtime.py',
