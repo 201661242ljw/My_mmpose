@@ -6,7 +6,6 @@ total_epochs = 100
 num_points = 224
 sigma = 2
 
-
 _base_ = [
     '_base_/default_runtime.py',
     '_base_/datasets/tower_12456.py'
@@ -27,22 +26,22 @@ lr_config = dict(
     step=[170, 200])
 
 log_config = dict(
-    interval= 802 // batch_size // 50 * 50,
+    interval=802 // batch_size // 50 * 50,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
     ])
-channel_cfg = dict( num_output_channels =num_points,
-                    dataset_joints      =num_points,
-                    dataset_channel     =[list(range(num_points))],
-                    inference_channel   =list(range(num_points))
-                    )
+channel_cfg = dict(num_output_channels=num_points,
+                   dataset_joints=num_points,
+                   dataset_channel=[list(range(num_points))],
+                   inference_channel=list(range(num_points))
+                   )
 
 # model settings
 model = dict(
     type='TopDown',
     pretrained='https://download.openmmlab.com/mmpose/'
-    'pretrain_models/hrnet_w48-8ef0771d.pth',
+               'pretrain_models/hrnet_w48-8ef0771d.pth',
     backbone=dict(
         type='HRNet',
         in_channels=3,
@@ -51,8 +50,8 @@ model = dict(
                 num_modules=1,
                 num_branches=1,
                 block='BOTTLENECK',
-                num_blocks=(4, ),
-                num_channels=(64, )),
+                num_blocks=(4,),
+                num_channels=(64,)),
             stage2=dict(
                 num_modules=1,
                 num_branches=2,
@@ -86,7 +85,6 @@ model = dict(
         shift_heatmap=True,
         modulate_kernel=11))
 
-
 data_cfg = dict(
     # image_size=[288, 384],
     # heatmap_size=[72, 96],
@@ -113,7 +111,7 @@ train_pipeline = [
     dict(type='TopDownGetRandomScaleRotation', rot_factor=30, scale_factor=0.25),
     dict(type='TopDownAffine'),
     dict(type='ToTensor'),
-    dict(type='NormalizeTensor',  mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    dict(type='NormalizeTensor', mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     # dict(type='TopDownGenerateTarget', sigma=2),
     dict(type='TopDownGenerateTarget', sigma=sigma),
     dict(

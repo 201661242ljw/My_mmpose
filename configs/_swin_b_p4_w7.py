@@ -6,7 +6,6 @@ dataset_part = 0
 num_points = 224
 sigm2 = 2
 
-
 _base_ = [
     '_base_/default_runtime.py',
     '_base_/datasets/tower_12456.py'

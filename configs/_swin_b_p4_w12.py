@@ -12,7 +12,6 @@ _base_ = [
 ]
 evaluation = dict(interval=10, metric='mAP', save_best='AP')
 
-
 optimizer = dict(
     type='AdamW',
     lr=5e-4,
@@ -35,17 +34,17 @@ lr_config = dict(
     step=[170, 200])
 
 log_config = dict(
-    interval= 802 // batch_size // 50 * 50,
+    interval=802 // batch_size // 50 * 50,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
     ])
 
-channel_cfg = dict( num_output_channels =num_points,
-                    dataset_joints      =num_points,
-                    dataset_channel     =[list(range(num_points))],
-                    inference_channel   =list(range(num_points))
-                    )
+channel_cfg = dict(num_output_channels=num_points,
+                   dataset_joints=num_points,
+                   dataset_channel=[list(range(num_points))],
+                   inference_channel=list(range(num_points))
+                   )
 
 # model settings
 pretrained = ('https://github.com/SwinTransformer/storage/releases/download'
@@ -83,7 +82,6 @@ model = dict(
         post_process='default',
         shift_heatmap=True,
         modulate_kernel=11))
-
 
 data_cfg = dict(
     # image_size=[288, 384],

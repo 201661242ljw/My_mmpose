@@ -34,17 +34,17 @@ lr_config = dict(
     step=[170, 200])
 # total_epochs = 210
 log_config = dict(
-    interval= 802 // batch_size // 50 * 50,
+    interval=802 // batch_size // 50 * 50,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
     ])
 
-channel_cfg = dict( num_output_channels =num_points,
-                    dataset_joints      =num_points,
-                    dataset_channel     =[list(range(num_points))],
-                    inference_channel   =list(range(num_points))
-                    )
+channel_cfg = dict(num_output_channels=num_points,
+                   dataset_joints=num_points,
+                   dataset_channel=[list(range(num_points))],
+                   inference_channel=list(range(num_points))
+                   )
 
 data_cfg = dict(
     # image_size=[288, 384],
