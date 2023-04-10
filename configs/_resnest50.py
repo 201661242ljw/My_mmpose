@@ -25,11 +25,11 @@ lr_config = dict(
     warmup_ratio=0.001,
     step=[170, 200])
 
-channel_cfg = dict( num_output_channels =num_points,
-                    dataset_joints      =num_points,
-                    dataset_channel     =[list(range(num_points))],
-                    inference_channel   =list(range(num_points))
-                    )
+channel_cfg = dict(num_output_channels=num_points,
+                   dataset_joints=num_points,
+                   dataset_channel=[list(range(num_points))],
+                   inference_channel=list(range(num_points))
+                   )
 # model settings
 model = dict(
     type='TopDown',
@@ -66,7 +66,6 @@ data_cfg = dict(
     # bbox_file='data/coco/person_detection_results/COCO_val2017_detections_AP_H_56_person.json',
     bbox_file='',
 )
-
 
 train_pipeline = [
     dict(type='LoadImageFromFile'),
